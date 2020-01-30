@@ -15,3 +15,9 @@ plot(train$LotArea,train$SalePrice)
 lines(sort(train$LotArea), fitted(lm1)[order(train$LotArea)], col='red', type='b') 
 
 summary(train)
+
+ggplot(data=train, aes(x=SalePrice))+geom_histogram(fill="blue",binwidth = 10000)+
+  scale_x_continuous(breaks= seq(0, 800000, by=100000))
+
+
+ggplot(data=train, aes(x=log(SalePrice)))+geom_histogram(fill="blue",binwidth = 1000000)
