@@ -56,19 +56,48 @@ cor_numVar<-cor_numVar[CorHigh,CorHigh]
 
 corrplot.mixed(cor_numVar,tl.col="black",tl.pos="lt")
 
-ggplot(train,aes(x=factor(OverallQual),y=SalePrice))+geom_boxplot(col='blue')+labs(x='Overall Quantity')
+ggplot(train,aes(x=factor(OverallQual),y=SalePrice))+geom_boxplot(col='blue')+
+  labs(x='Overall Quantity')
 
 
 
 
-ggplot(train,aes(x=GrLivArea,y=SalePrice))+geom_point(col="blue")+geom_smooth(method="lm",se=FALSE,color="black",aes(group=1))
+ggplot(train,aes(x=GrLivArea,y=SalePrice))+geom_point(col="blue")+
+  geom_smooth(method="lm",se=FALSE,color="black",aes(group=1))
 
 NAcol<-which(colSums(is.na(all))>0)
 
 sort(colSums(sapply(all[NAcol],is.na)),decreasing =TRUE)
 
 c<-is.na(all$PoolQC)
-all$PoolQC[is.na(all$PoolQC)]<-as.factor('a')
-all$PoolQC[is.na(all$PoolQC)] <- 'None'
-replace(is.na(all$PoolQC),"None")
+all$PoolQC[is.na(all$PoolQC)] <- "None"
+
+
+
+
+
+Qualitiy<-c("Ex"=3,"Gd"=2,"Fa"=1,"None"=0)
+
+
+all$PoolQC<-as.integer(revalue(all$PoolQC,Qualitiy))
+
+all[all$PoolQC==0&all$PoolArea>0,c("PoolQC","PoolArea","OverallQual")]
+
+all$PoolQC[2421]<-1
+all$PoolQC[2421]<-2
+all$PoolQC[2421]<-1
+all$PoolQC[2504]<-1
+all$PoolQC[2600]<-1
+
+
+library(dplyr)
+
+
+temp <- all %>% mutate(MiscFeature = ifelse(is.na(MiscFeature), "None", MiscFeature))
+all$MiscFeature<-all %>% mutate(MiscFeature=ifelse(is.na(MiscFeature),"None",MiscFeature))
+#all$MiscFeature[is.na(all$MiscFeature)] <- rep("None", )
+
+
+
+all$MiscFeature<-as.factor(all$MiscFeature)
                                                                                                                                                      clear(numer)
