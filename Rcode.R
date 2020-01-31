@@ -94,9 +94,13 @@ library(dplyr)
 
 
 temp <- all %>% mutate(MiscFeature = ifelse(is.na(MiscFeature), "None", MiscFeature))
-all$MiscFeature<-all %>% mutate(MiscFeature=ifelse(is.na(MiscFeature),"None",MiscFeature))
+all<-all %>% mutate(MiscFeature=ifelse(is.na(MiscFeature),"None",MiscFeature))
 #all$MiscFeature[is.na(all$MiscFeature)] <- rep("None", )
 
+temp$MiscFeature<-as.factor(temp$MiscFeature)
+ChangeTemp<-c("1"=1,"2"=2,"3"=3,"4"=4,"None"=0)
+
+temp$MiscFeature<-as.integer(revalue(temp$MiscFeature,ChangeTemp))
 
 
 all$MiscFeature<-as.factor(all$MiscFeature)
