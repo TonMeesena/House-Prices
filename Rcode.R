@@ -91,17 +91,16 @@ all$PoolQC[2600]<-1
 
 
 library(dplyr)
+all$MiscFeature[is.na(all$MiscFeature)] <- "None"
 
-
-temp <- all %>% mutate(MiscFeature = ifelse(is.na(MiscFeature), "None", MiscFeature))
-all<-all %>% mutate(MiscFeature=ifelse(is.na(MiscFeature),"None",MiscFeature))
+#temp <- all %>% mutate(MiscFeature = ifelse(is.na(MiscFeature), "None", MiscFeature))
+#all<-all %>% mutate(MiscFeature=ifelse(is.na(MiscFeature),"None",MiscFeature))
 #all$MiscFeature[is.na(all$MiscFeature)] <- rep("None", )
 
-temp$MiscFeature<-as.factor(temp$MiscFeature)
+#temp$MiscFeature<-as.factor(temp$MiscFeature)
 ChangeTemp<-c("1"=1,"2"=2,"3"=3,"4"=4,"None"=0)
 
-temp$MiscFeature<-as.integer(revalue(temp$MiscFeature,ChangeTemp))
-
-
-all$MiscFeature<-as.factor(all$MiscFeature)
+all$MiscFeature<-as.integer(revalue(all$MiscFeature,ChangeTemp))
+#temp<-temp%>%mutate(MiscFeature=ifelse(MiscFeature==5), "0" ,MiscFeature)
+#all$MiscFeature<-as.factor(all$MiscFeature)
                                                                                                                                                      clear(numer)
