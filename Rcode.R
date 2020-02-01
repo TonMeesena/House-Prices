@@ -73,8 +73,9 @@ c<-is.na(all$PoolQC)
 all$PoolQC[is.na(all$PoolQC)] <- "None"
 
 
-
-
+all$Fence <- as.character(all$Fence)
+all$Fence[is.na(all$Fence)] <- "None"
+all$Fence <- as.factor(all$Fence)
 
 Qualitiy<-c("Ex"=3,"Gd"=2,"Fa"=1,"None"=0)
 
@@ -103,4 +104,11 @@ ChangeTemp<-c("1"=1,"2"=2,"3"=3,"4"=4,"None"=0)
 all$MiscFeature<-as.integer(revalue(all$MiscFeature,ChangeTemp))
 #temp<-temp%>%mutate(MiscFeature=ifelse(MiscFeature==5), "0" ,MiscFeature)
 #all$MiscFeature<-as.factor(all$MiscFeature)
-                                                                                                                                                     clear(numer)
+                                                  
+
+
+ggplot(all, aes(x=LotArea,y=LotFrontage))+geom_point(color="blue")+geom_smooth(method="lm",se=FALSE,color="black",aes(group=1))
+
+
+
+                                                                                                   clear(numer)
