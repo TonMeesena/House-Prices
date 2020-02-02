@@ -107,8 +107,12 @@ all$MiscFeature<-as.integer(revalue(all$MiscFeature,ChangeTemp))
                                                   
 
 
-ggplot(all, aes(x=LotArea,y=LotFrontage))+geom_point(color="blue")+geom_smooth(method="lm",se=FALSE,color="black",aes(group=1))
+ggplot(all, aes(x=LotArea,y=SalePrice))+geom_point(color="blue")+facet_wrap(~PoolQC)+geom_smooth(method="lm",se=FALSE,color="black",aes(group=1))
+
+ggplot(all,aes(x=OverallQual,y=SalePrice))+geom_point(color="blue")
+
+                                              
+ggplot(all, aes(x=TotalBsmtSF,y=SalePrice))+geom_point(color="blue")+facet_wrap(~OverallQual)+geom_smooth(method="lm",se=FALSE,color="black",aes(group=1))  
 
 
 
-                                                                                                   clear(numer)
