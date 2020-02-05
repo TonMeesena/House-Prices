@@ -135,14 +135,7 @@ corrplot.mixed(cor_numvarH,tl.co="black",tl.pos="lt",tl.cex=0.7,cl.cex=0.7,numbe
 
 
 
-allnum<-all[,numericVars]
 
-correlationMatrix<-cor(allnum,use="pairwise.complete.obs")
-print(correlationMatrix)
-
-highlycorre<-findCorrelation(correlationMatrix,cutoff = 0.5)
-
-print(highlycorre)
 
 
 
