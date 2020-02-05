@@ -115,6 +115,22 @@ ggplot(all,aes(x=OverallQual,y=SalePrice))+geom_point(color="blue")
 ggplot(all, aes(x=TotalBsmtSF,y=SalePrice))+geom_point(color="blue")+facet_wrap(~OverallQual)+geom_smooth(method="lm",se=FALSE,color="black",aes(group=1))  
 
 
-x=1
+ggplot(all, aes(x=MoSold,y=SalePrice ))+facet_wrap(~YrSold)+geom_hline(yintercept = 196000, linetype="dashed",color="red")+geom_bar(stat="summary",fill="blue",fun.y="mean")
+
+all$MoSold<-as.factor(all$MoSold)
+
+
+
+
+
+
+ggplot(all[!is.na(all$SalePrice),],aes(x=MoSold,y=SalePrice))+geom_bar(stat="summary",fun.y="median",fill="blue")+facet_wrap(~YrSold)
+
+CorHigh<-names(which(apply(cor_sorted,1,function(x) abs(x)>0.5)))
+cor_numvarH<-cor_numVar[CorHigh,CorHigh]
+
+corrplot.mixed(cor_numvarH,tl.co="black",tl.pos="lt",tl.cex=0.7,cl.cex=0.7,number.cex=0.7)
+
+
 
 
