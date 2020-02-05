@@ -115,6 +115,8 @@ ggplot(all,aes(x=OverallQual,y=SalePrice))+geom_point(color="blue")
 ggplot(all, aes(x=TotalBsmtSF,y=SalePrice))+geom_point(color="blue")+facet_wrap(~OverallQual)+geom_smooth(method="lm",se=FALSE,color="black",aes(group=1))  
 
 
+x=1
+
 
 
 allnum<-all[,numericVars]
