@@ -116,3 +116,23 @@ ggplot(all, aes(x=TotalBsmtSF,y=SalePrice))+geom_point(color="blue")+facet_wrap(
 
 
 
+
+allnum<-all[,numericVars]
+
+correlationMatrix<-cor(allnum,use="pairwise.complete.obs")
+print(correlationMatrix)
+
+highlycorre<-findCorrelation(correlationMatrix,cutoff = 0.5)
+
+print(highlycorre)
+
+
+
+
+
+
+
+
+
+
+
