@@ -8,6 +8,8 @@ install.packages("randomForest")
 install.packages("dplyr")
 install.packages("Metrics")
 install.packages("neuralnet")
+install.packages("caret")
+library(caret)
 library(neuralnet)
 library(Metrics)
 library(knitr)
@@ -241,11 +243,16 @@ rmse(valid_high_pred,train_valid$SalePrice)
 neural_train<-neuralnet(SalePrice~OverallQual+GrLivArea+GarageCars+GarageArea+TotalBsmtSF+X1stFlrSF+FullBath+TotRmsAbvGrd+YearBuilt+YearRemodAdd
 ,hidden=c(3,1),data=train_train,linear.output=T,stepmax=1e+07)
 
+valid_nn<-predict(neural_train,train_valid)
+RMSE(valid_nn,train_valid$SalePrice)
+
 
 #regression
 fit<-lm(SalePrice~OverallQual+GrLivArea+GarageCars+GarageArea+TotalBsmtSF+X1stFlrSF+FullBath+TotRmsAbvGrd+YearBuilt+YearRemodAdd,data=train_train)
 
 valid_t<-predict(fit,train_valid)
 RMSE(valid_t,train_valid$SalePrice)
+
+
 
 
