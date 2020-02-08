@@ -176,6 +176,37 @@ varImpPlot(model2)
 
 
 
+set.seed(1)
+num<-sample(nrow(test), 0.7*nrow(test))
+
+train_train<-train[num,]
+train_valid<-train[-num,]
+
+tree_train<-randomForest(SalePrice~ ,train_train,)
+
+
+sapply(train,function(y) sum(length(which(is.na(y)))))
+
+name<-names(train[,train %>% apply(2,function(x) all(!is.na(x)))])
+
+sapply(train[,name], function(y) sum(length(which(is.na(y)))))
+
+formu<-paste(name,sep="",collapse="+")
+
+a <- train_train %>% 
+  select_if(~sum(is.na(.)) == 0) 
 
 
 
+tree_train<-randomForest(SalePrice~. - SalePrice,a,ntree=500,mtry=15,importance=TRUE)
+plot(tree_train)
+
+b<-train_valid %>%
+  select_if(~sum(is.na(.))==0)
+valid_pred<-predict(tree_train,b)
+
+RMSE(valid_pred,train_valid$SalePrice)
+hist(valid_pred,breaks=100)
+hist(train_valid$SalePrice,breaks=100)
+c<-valid_pred - train_valid$SalePrice
+hist(c,breaks=100)
