@@ -236,7 +236,7 @@ valid_high_pred<-predict(tree_train2,train_valid)
 
 hist(valid_high_pred)
 hist(train_valid$SalePrice)
-rmse(valid_high_pred,train_valid$SalePrice)
+RMSE(valid_high_pred,train_valid$SalePrice)
 
 
 #neural network 
@@ -246,7 +246,7 @@ neural_train<-neuralnet(SalePrice~OverallQual+GrLivArea+GarageCars+GarageArea+To
 valid_nn<-predict(neural_train,train_valid)
 RMSE(valid_nn,train_valid$SalePrice)
 hist(valid_nn)
-
+plot(valid_nn)
 
 
 #regression
@@ -256,7 +256,8 @@ valid_pred<-predict(fit,train_valid)
 RMSE(valid_pred,train_valid$SalePrice)
 
 
-
+#visualize
+ggplot(train_train,aes(x=OverallQual,y=SalePrice))+geom_point(color="blue")
 
 
 
