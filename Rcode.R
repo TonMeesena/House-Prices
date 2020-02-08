@@ -1,6 +1,15 @@
 train<-read.csv("train.csv",header = TRUE)
 test<-read.csv("test.csv")
 Sale<-train$SalePrice
+
+install.packages("corrplot")
+install.packages("knitr")
+install.packages("randomForest")
+install.packages("dplyr")
+install.packages("Metrics")
+install.packages("neuralnet")
+library(neuralnet)
+library(Metrics)
 library(knitr)
 library(ggplot2)
 library(plyr)
@@ -210,3 +219,31 @@ hist(valid_pred,breaks=100)
 hist(train_valid$SalePrice,breaks=100)
 c<-valid_pred - train_valid$SalePrice
 hist(c,breaks=100)
+
+
+
+#random Forest for high correlation 
+for2<-paste(CorHigh,collapse="+")
+
+tree_train2<-randomForest(SalePrice~OverallQual+GrLivArea+GarageCars+GarageArea+TotalBsmtSF+X1stFlrSF+FullBath+TotRmsAbvGrd+YearBuilt+YearRemodAdd
+,train_train,ntree=500,mtry=15,importance=TRUE)
+
+plot(tree_train2)
+
+valid_high_pred<-predict(tree_train2,train_valid)
+
+hist(valid_high_pred)
+hist(train_valid$SalePrice)
+rmse(valid_high_pred,train_valid$SalePrice)
+
+
+#neural network 
+neural_train<-neuralnet(SalePrice~OverallQual+GrLivArea+GarageCars+GarageArea+TotalBsmtSF+X1stFlrSF+FullBath+TotRmsAbvGrd+YearBuilt+YearRemodAdd
+,hidden=c(3,1),data=train_train,linear.output=T,stepmax=1e+07)
+
+
+
+
+
+
+
