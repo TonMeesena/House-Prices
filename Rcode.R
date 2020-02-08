@@ -137,10 +137,42 @@ corrplot.mixed(cor_numvarH,tl.co="black",tl.pos="lt",tl.cex=0.7,cl.cex=0.7,numbe
 
 
 
+set.seed(1)
+train_train<-sample(nrow(train),0.7*nrow(train),replace=FALSE)
+
+
+TrainSet<-train[train_train,]
+ValidSet<-train[-train_train,]
+
+summary(TrainSet)
 
 
 
+model1<-randomForest(SalePrice~.,data=TrainSet,importance=TRUE)
 
+
+data1 <- read.csv(file.choose(), header = TRUE)
+names(data1)<-c("BuyingPrice","Maintenance","NumDoors","NumPersons","BootSpace","Safety","Condition")
+set.seed(7)
+trainNum<-sample(nrow(data1),0.7*nrow(data1),replace=FALSE)
+TrainSetCar<-data1[trainNum,]
+ValidSetCar<-data1[-trainNum,]
+model1 <- randomForest(Condition ~ ., data = TrainSetCar, importance = TRUE)
+
+model2<-randomForest(Condition ~.,data=TrainSetCar,ntree=500,mtry=6,importance=TRUE)
+
+predTrain<-predict(model2,TrainSetCar,type="class")
+
+
+table(predTrain, TrainSetCar$Condition)
+
+predValid<-predict(model2,ValidSetCar,type="class")
+mean(predValid==ValidSetCar$Condition)
+table(predValid,ValidSetCar$Condition)
+
+
+importance(model2)
+varImpPlot(model2)
 
 
 
