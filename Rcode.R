@@ -242,8 +242,10 @@ neural_train<-neuralnet(SalePrice~OverallQual+GrLivArea+GarageCars+GarageArea+To
 ,hidden=c(3,1),data=train_train,linear.output=T,stepmax=1e+07)
 
 
+#regression
+fit<-lm(SalePrice~OverallQual+GrLivArea+GarageCars+GarageArea+TotalBsmtSF+X1stFlrSF+FullBath+TotRmsAbvGrd+YearBuilt+YearRemodAdd,data=train_train)
 
-
-
+valid_t<-predict(fit,train_valid)
+RMSE(valid_t,train_valid$SalePrice)
 
 
