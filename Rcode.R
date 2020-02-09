@@ -297,18 +297,21 @@ ggplot(data=train2,aes(x=numDate,y=SalePrice))+geom_bar(fill="blue",stat="summar
 
 #Check each feature
 #MSZoning
-ggplot(data=train2,aes(x=OverallQual,y=SalePrice))+geom_point(color="blue")+facet_grid(~MSZoning )
+ggplot(data=train,aes(x=OverallQual,y=SalePrice))+geom_point(color="blue")+facet_grid(~MSZoning )
 
 #LotFrontage
-ggplot(data=train2,aes(x=LotFrontage,y=SalePrice))+geom_point(color="blue")
+ggplot(data=train,aes(x=LotFrontage,y=SalePrice))+geom_point(color="blue")
 
 #LotArea
-ggplot(data=train2,aes(x=LotArea,y=SalePrice))+geom_point(color="blue")``
+ggplot(data=train,aes(x=LotArea,y=SalePrice))+geom_point(color="blue")
 
+#Street
+ggplot(data=train,aes(x=OverallQual,y=SalePrice))+geom_point(color="blue")+facet_wrap(~LotShape)
+ggplot(data=train,aes(x=OverallQual,fill=SalePrice,color=LotShape))+geom_bar(summary="stat",fun.y="mean")
 
-
-
-
+#LandContour
+ggplot(data=train,aes(x=LandContour,fill=SalePrice))+geom_bar(fill="blue",summary="stat",fun.y="mean")
+ggplot(data=train,aes(x=LandContour,y=SalePrice))+geom_point(fill="blue")
 
 
 
