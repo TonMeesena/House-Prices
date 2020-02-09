@@ -303,7 +303,7 @@ ggplot(data=train2,aes(x=OverallQual,y=SalePrice))+geom_point(color="blue")+face
 ggplot(data=train2,aes(x=LotFrontage,y=SalePrice))+geom_point(color="blue")
 
 #LotArea
-ggplot(data=train2,aes(x=LotArea,y=SalePrice))+geom_point(color="blue")
+ggplot(data=train2,aes(x=LotArea,y=SalePrice))+geom_point(color="blue")``
 
 
 
