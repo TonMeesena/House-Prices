@@ -25,6 +25,7 @@ library(ggrepel)
 library(randomForest)
 library(psych)
 library(xgboost)
+library(tidyverse)
 library("ggplot2")
 names(train)
 str(train)
@@ -118,15 +119,18 @@ all$MiscFeature<-as.integer(revalue(all$MiscFeature,ChangeTemp))
                                                   
 
 
-ggplot(all, aes(x=LotArea,y=SalePrice))+geom_point(color="blue")+facet_wrap(~PoolQC)+geom_smooth(method="lm",se=FALSE,color="black",aes(group=1))
+ggplot(all, aes(x=LotArea,y=SalePrice))+geom_point(color="blue")+facet_wrap(~PoolQC)+
+  geom_smooth(method="lm",se=FALSE,color="black",aes(group=1))
 
 ggplot(all,aes(x=OverallQual,y=SalePrice))+geom_point(color="blue")
 
                                               
-ggplot(all, aes(x=TotalBsmtSF,y=SalePrice))+geom_point(color="blue")+facet_wrap(~OverallQual)+geom_smooth(method="lm",se=FALSE,color="black",aes(group=1))  
+ggplot(all, aes(x=TotalBsmtSF,y=SalePrice))+geom_point(color="blue")+facet_wrap(~OverallQual)+
+  geom_smooth(method="lm",se=FALSE,color="black",aes(group=1))  
 
 
-ggplot(all, aes(x=MoSold,y=SalePrice ))+facet_wrap(~YrSold)+geom_hline(yintercept = 196000, linetype="dashed",color="red")+geom_bar(stat="summary",fill="blue",fun.y="mean")
+ggplot(all, aes(x=MoSold,y=SalePrice ))+facet_wrap(~YrSold)+geom_hline(yintercept = 196000, linetype="dashed",color="red")+
+  geom_bar(stat="summary",fill="blue",fun.y="mean")
 
 all$MoSold<-as.factor(all$MoSold)
 
@@ -135,7 +139,8 @@ all$MoSold<-as.factor(all$MoSold)
 
 
 
-ggplot(all[!is.na(all$SalePrice),],aes(x=MoSold,y=SalePrice))+geom_bar(stat="summary",fun.y="median",fill="blue")+facet_wrap(~YrSold)
+ggplot(all[!is.na(all$SalePrice),],aes(x=MoSold,y=SalePrice))+geom_bar(stat="summary",fun.y="median",fill="blue")+
+  facet_wrap(~YrSold)
 
 CorHigh<-names(which(apply(cor_sorted,1,function(x) abs(x)>0.5)))
 cor_numvarH<-cor_numVar[CorHigh,CorHigh]
@@ -227,8 +232,9 @@ hist(c,breaks=100)
 #random Forest for high correlation 
 for2<-paste(CorHigh,collapse="+")
 
-tree_train2<-randomForest(SalePrice~OverallQual+GrLivArea+GarageCars+GarageArea+TotalBsmtSF+X1stFlrSF+FullBath+TotRmsAbvGrd+YearBuilt+YearRemodAdd
-,train_train,ntree=500,mtry=15,importance=TRUE)
+tree_train2<-randomForest(SalePrice~OverallQual+GrLivArea+
+                            GarageCars+GarageArea+TotalBsmtSF+X1stFlrSF+FullBath+TotRmsAbvGrd+
+                            YearBuilt+YearRemodAdd,train_train,ntree=500,mtry=15,importance=TRUE)
 
 plot(tree_train2)
 
@@ -240,8 +246,9 @@ RMSE(valid_high_pred,train_valid$SalePrice)
 
 
 #neural network 
-neural_train<-neuralnet(SalePrice~OverallQual+GrLivArea+GarageCars+GarageArea+TotalBsmtSF+X1stFlrSF+FullBath+TotRmsAbvGrd+YearBuilt+YearRemodAdd
-,hidden=c(3,1),data=train_train,linear.output=T,stepmax=1e+07)
+neural_train<-neuralnet(SalePrice~OverallQual+GrLivArea+GarageCars+
+                          GarageArea+TotalBsmtSF+X1stFlrSF+FullBath+TotRmsAbvGrd+YearBuilt+
+                          YearRemodAdd, hidden=c(3,1),data=train_train,linear.output=T,stepmax=1e+07)
 
 valid_nn<-predict(neural_train,train_valid)
 RMSE(valid_nn,train_valid$SalePrice)
@@ -250,14 +257,55 @@ plot(valid_nn)
 
 
 #regression
-fit<-lm(SalePrice~OverallQual+GrLivArea+GarageCars+GarageArea+TotalBsmtSF+X1stFlrSF+FullBath+TotRmsAbvGrd+YearBuilt+YearRemodAdd,data=train_train)
+fit<-lm(SalePrice~OverallQual+GrLivArea+GarageCars+GarageArea+TotalBsmtSF+
+          X1stFlrSF+FullBath+TotRmsAbvGrd+YearBuilt+YearRemodAdd,data=train_train)
 
 valid_pred<-predict(fit,train_valid)
 RMSE(valid_pred,train_valid$SalePrice)
 
+train_withID <- train_train %>%
+  rownames_to_column("ID") %>%
+  select(c("ID", "SalePrice"))
+train_valid_withID <- train_valid %>%
+  rownames_to_column("ID") %>%
+  select(c("ID", "SalePrice"))
+
+
+
+data_for_plot <- left_join(train_withID, train_valid_withID)
+
 
 #visualize
-ggplot(train_train,aes(x=OverallQual,y=SalePrice))+geom_point(color="blue")
+ggplot(train_train,aes(x=GarageCars,y=SalePrice))+geom_point(color="blue")
+ggplot(train_valid,aes(x=GarageCars,y=valid_pred))+geom_point(color="red")
+
+ggplot() +
+  geom_point(data = train_valid_withID, aes(x = YearRemodAdd, y = SalePrice), color = "blue") +
+  geom_point(data = train_valid_withID, aes(x = YearRemodAdd, y = valid_pred), color = "red")
+
+
+ggplot(data=train,aes(x=MoSold,y=SalePrice))+geom_bar(fill="green",stat="summary",fun.y="median")+facet_wrap(~YrSold)+
+  geom_hline(yintercept = 180000)
+
+#numdate
+train2<-train
+numDate<-train2$MoSold+(train2$YrSold-2005)*12
+train2<-cbind(train2,numDate)
+train2$SalePrice<-log(train2$SalePrice)
+hist(train2$SalePrice)
+ggplot(data=train2,aes(x=numDate,y=SalePrice))+geom_bar(fill="blue",stat="summary",fun.y="median")
+
+#Check each feature
+#MSZoning
+ggplot(data=train,aes(x=MSZoning,y=SalePrice))+geom_bar(fill="blue",stat="summary",fun.y="mean")
+
+
+
+
+
+
+
+
 
 
 
