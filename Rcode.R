@@ -297,10 +297,13 @@ ggplot(data=train2,aes(x=numDate,y=SalePrice))+geom_bar(fill="blue",stat="summar
 
 #Check each feature
 #MSZoning
-ggplot(data=train,aes(x=MSZoning,y=SalePrice))+geom_bar(fill="blue",stat="summary",fun.y="mean")
+ggplot(data=train2,aes(x=OverallQual,y=SalePrice))+geom_point(color="blue")+facet_grid(~MSZoning )
 
+#LotFrontage
+ggplot(data=train2,aes(x=LotFrontage,y=SalePrice))+geom_point(color="blue")
 
-
+#LotArea
+ggplot(data=train2,aes(x=LotArea,y=SalePrice))+geom_point(color="blue")
 
 
 
