@@ -320,3 +320,17 @@ ggplot(data=train,aes(x=OverallQual,y=SalePrice,color=Utilities))+geom_point()
 #LotConfig
 ggplot(data=train,aes(x=OverallQual,y=SalePrice,color=LotConfig))+geom_point()
 ggplot(data=train,aes(x=OverallQual,y=SalePrice,fill=LotConfig))+geom_bar(stat="summary",fun.y="mean")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
