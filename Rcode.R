@@ -9,6 +9,8 @@ install.packages("dplyr")
 install.packages("Metrics")
 install.packages("neuralnet")
 install.packages("caret")
+install.packages("tidyverse")
+library(tidyverse)
 library(caret)
 library(neuralnet)
 library(Metrics)
@@ -324,4 +326,11 @@ ggplot(data=train,aes(x=OverallQual,y=SalePrice))+geom_bar(stat="summary",fun.y=
 ggplot(data=train,aes(x=OverallQual,y=SalePrice))+geom_point(color="orange")+facet_wrap(~LotConfig)
 ggplot(data=train,aes(x=LotConfig,y=SalePrice))+geom_bar(stat="summary",fun.y="mean",fill="red")
 
-#
+#LandSlope
+ggplot(data=train,aes(x=OverallQual,y=SalePrice))+geom_bar(stat="summary",fun.y="mean",fill="green")+facet_wrap(~LandSlope)
+ggplot(data=train,aes(x=LandSlope,y=SalePrice))+geom_bar(stat="summary",fun.y="mean",fill="red")
+ggplot(data=train,aes(x=OverallQual,y=SalePrice,color=LandSlope))+geom_point()
+
+#Neighborhood
+ggplot(data=train,aes(x=OverallQual,y=SalePrice,color=Neighborhood))+geom_point()
+ggplot(data=train,aes(x=Neighborhood,y=SalePrice))+geom_bar(stat="summary",fun.y="median",fill="red")
