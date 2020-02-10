@@ -333,4 +333,73 @@ ggplot(data=train,aes(x=OverallQual,y=SalePrice,color=LandSlope))+geom_point()
 
 #Neighborhood
 ggplot(data=train,aes(x=OverallQual,y=SalePrice,color=Neighborhood))+geom_point()
+
 ggplot(data=train,aes(x=Neighborhood,y=SalePrice))+geom_bar(stat="summary",fun.y="median",fill="red")
+
+train_by_Neighbor <- train %>% 
+  group_by(Neighborhood) %>% 
+  dplyr::summarise(MeanSales = mean(SalePrice))
+
+
+plot(MeanSales~Neighborhood,data=train_by_Neighbor)
+ggplot(data=train_by_Neighbor,aes(x=Neighborhood, y=MeanSales))+geom_point(fill="blue")
+ggplot(data=train_by_Neighbor,aes(x=Neighborhood, weight=MeanSales))+geom_bar(fill="blue") 
+
+train_by_Neighbor_g <-train_by_Neighbor %>% 
+  filter(MeanSales>median(MeanSales))
+train_by_Neighbor_l <-train_by_Neighbor %>% 
+  filter(MeanSales<median(MeanSales))
+
+ggplot(data=train_by_Neighbor_g,aes(x=Neighborhood, weight=MeanSales))+geom_bar(fill="blue") 
+  
+  
+ggplot(data=train_by_Neighbor,aes(x=Neighborhood, weight=MeanSales))+geom_bar(data=train_by_Neighbor_g,fill="blue") +
+  geom_bar(data=train_by_Neighbor_l,fill="red")
+
+
+
+#Condition1
+ggplot(data=train,aes(x=Condition1, y=SalePrice))+geom_bar(fill="blue",stat="summary",fun.y=mean) 
+ggplot(data=train,aes(x=Condition1, y=SalePrice))+geom_point(color="blue")
+
+#Condition2
+ggplot(data=train,aes(x=Condition2, y=SalePrice))+geom_bar(fill="blue",stat="summary",fun.y=mean) 
+ggplot(data=train,aes(x=Condition2, y=SalePrice))+geom_point(color="blue")
+
+
+#BldgType
+ggplot(data=train,aes(x=BldgType, y=SalePrice))+geom_bar(fill="blue",stat="summary",fun.y=mean) 
+ggplot(data=train,aes(x=BldgType, y=SalePrice))+geom_point(color="blue")
+
+#HouseStyle
+ggplot(data=train,aes(x=HouseStyle, y=SalePrice))+geom_bar(fill="blue",stat="summary",fun.y=mean) 
+ggplot(data=train,aes(x=HouseStyle, y=SalePrice))+geom_point(color="blue")
+
+#OverallQual
+ggplot(data=train,aes(x=OverallQual, y=SalePrice))+geom_bar(fill="blue",stat="summary",fun.y=mean) 
+ggplot(data=train,aes(x=OverallQual, y=SalePrice))+geom_point(color="blue")
+
+#OverallCond
+ggplot(data=train,aes(x=OverallCond, y=SalePrice))+geom_bar(fill="blue",stat="summary",fun.y=mean) 
+ggplot(data=train,aes(x=OverallCond, y=SalePrice))+geom_point(color="blue")
+
+#YearBuilt
+ggplot(data=train,aes(x=YearBuilt, y=SalePrice))+geom_bar(fill="blue",stat="summary",fun.y=mean) 
+ggplot(data=train,aes(x=YearBuilt, y=SalePrice))+geom_point(color="blue")
+
+
+ggplot(train, aes(x = as.factor(YearBuilt), y = SalePrice,color=OverallQual)) + 
+  geom_point(size=2) + 
+  stat_summary(fun.y=median, aes(group=1), geom="line", colour="blue") 
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
