@@ -340,6 +340,13 @@ train_by_Neighbor <- train %>%
   group_by(Neighborhood) %>% 
   dplyr::summarise(MeanSales = mean(SalePrice))
 
+a <- train %>% 
+  group_by(Neighborhood) %>% 
+  filter(SalePrice > mean(SalePrice))
+
+ggplot(a,aes(x=Neighborhood,y=SalePrice))+geom_point(fill="blue")
+ggplot(train,aes(x=Neighborhood,y=SalePrice))+geom_point(alpha=0.2,color="blue")+geom_point(color="red",data=a)
+
 
 plot(MeanSales~Neighborhood,data=train_by_Neighbor)
 ggplot(data=train_by_Neighbor,aes(x=Neighborhood, y=MeanSales))+geom_point(fill="blue")
@@ -393,13 +400,204 @@ ggplot(train, aes(x = as.factor(YearBuilt), y = SalePrice,color=OverallQual)) +
   stat_summary(fun.y=median, aes(group=1), geom="line", colour="blue") 
 
 
+#YearRemodAdd
+ggplot(data=train,aes(x=YearRemodAdd, y=SalePrice))+geom_bar(fill="blue",stat="summary",fun.y=mean) 
+
+ggplot(train, aes(x = YearRemodAdd, y = SalePrice,color=OverallQual)) + 
+  geom_point(size=2) + 
+  stat_summary(fun.y=median, aes(group=1), geom="line", colour="blue") 
+
+#RoofStyle
+
+ggplot(data=train,aes(x=RoofStyle,y=SalePrice))+geom_point(color="blue")+
+  stat_summary(fun.y=median,aes(group=1),geom="line",color="red")
+ggplot(data=train,aes(x=RoofStyle,y=SalePrice))+geom_bar(fill="blue",stat="summary",fun.y=mean)
+
+
+#RoofMatl
+
+ggplot(data=train,aes(x=RoofMatl,y=SalePrice))+geom_point(color="blue")+
+  stat_summary(fun.y=median,color="red",geom="line",aes(group=1))
+
+#Exterior1st
+ggplot(data=train,aes(x=Exterior1st,y=SalePrice))+geom_point(color="blue")+
+  stat_summary(fun.y=median,color="red",geom="line",aes(group=1))
+
+ggplot(data=train,aes(x=Exterior1st,y=SalePrice))+
+  geom_bar(fill="blue",stat="summary",fun.y=median)+
+  geom_hline(yintercept=median(train$SalePrice))
 
 
 
+
+#Exterior2nd
+ggplot(data=train,aes(x=Exterior2nd,y=SalePrice))+geom_point(color="blue")+
+  stat_summary(fun.y=median,color="red",geom="line",aes(group=1))
+
+ggplot(data=train,aes(x=Exterior2nd,y=SalePrice))+
+  geom_bar(fill="blue",stat="summary",fun.y=median)+
+  geom_hline(yintercept=median(train$SalePrice))
+
+
+#MasVnrType
+ggplot(data=train,aes(x=MasVnrType,y=SalePrice))+geom_point(color="blue")+
+  stat_summary(fun.y=median,color="red",geom="line",aes(group=1))
+
+ggplot(data=train,aes(x=MasVnrType,y=SalePrice))+
+  geom_bar(fill="blue",stat="summary",fun.y=median)+
+  geom_hline(yintercept=median(train$SalePrice))
+
+
+#MasVnrArea
+ggplot(data=train,aes(x=MasVnrArea,y=SalePrice))+geom_point(alpha=0.3,color="blue")+
+  geom_smooth(method="lm",color="red")+geom_point(color="red",size=4,data=train[which(is.na(train$MasVnrArea)),])
+
+
+
+#ExterQual
+
+ggplot(data=train,aes(x=ExterQual,y=SalePrice,color=OverallQual))+geom_point()+
+  stat_summary(fun.y=median,color="red",geom="line",aes(group=1))
+
+ggplot(data=train,aes(x=ExterQual,y=SalePrice))+geom_bar(stat="summary",fun.y=median,fill="red")
+
+ggplot(data=train,aes(x=OverallQual,y=SalePrice))+geom_point(color="blue")+facet_wrap(~ExterQual)
+  stat_summary(fun.y=median,color="red",geom="line",aes(group=1))
+
+#Foundation
+
+ggplot(data=train,aes(x=Foundation,y=SalePrice,color=OverallQual))+geom_point()+
+    stat_summary(fun.y=median,color="red",geom="line",aes(group=1))+geom_boxplot(alpha=0.1)
+  
+  
+ggplot(data=train,aes(x=Foundation,y=SalePrice))+geom_bar(stat="summary",fun.y=median,fill="red")
+  
+  
+ggplot(data=train,aes(x=OverallQual,y=SalePrice))+geom_point(color="blue")+facet_wrap(~Foundation)
+stat_summary(fun.y=median,color="red",geom="line",aes(group=1))
   
   
   
+#BsmtQual
+
+ggplot(data=train,aes(x=BsmtQual,y=SalePrice,color=OverallQual))+geom_point()+
+  stat_summary(fun.y=median,color="red",geom="line",aes(group=1))+geom_boxplot(alpha=0.1)
+ggplot(data=train,aes(x=BsmtQual,y=SalePrice))+geom_bar(stat="summary",fun.y=median,fill="red")
   
   
+ggplot(data=train,aes(x=OverallQual,y=SalePrice))+geom_point(color="blue")+
+  facet_wrap(~BsmtQual)+geom_smooth(method="lm")+
+  stat_summary(fun.y=median,color="red",geom="line",aes(group=1))
   
+
+#BsmtCond
+
+ggplot(data=train,aes(x=BsmtCond,y=SalePrice,color=OverallQual))+geom_point()+
+  stat_summary(fun.y=median,color="red",geom="line",aes(group=1))+geom_boxplot(alpha=0.1)
+ggplot(data=train,aes(x=BsmtCond,y=SalePrice))+geom_bar(stat="summary",fun.y=median,fill="red")
+
+
+ggplot(data=train,aes(x=OverallQual,y=SalePrice))+geom_point(color="blue")+
+  facet_wrap(~BsmtCond)+geom_smooth(method="lm")+
+  stat_summary(fun.y=median,color="red",geom="line",aes(group=1))
+
+#BsmtExposure
+ggplot(data=train,aes(x=BsmtExposure,y=SalePrice,color=OverallQual))+geom_point()+
+  stat_summary(fun.y=median,color="red",geom="line",aes(group=1))+geom_boxplot(alpha=0.1)
+ggplot(data=train,aes(x=BsmtExposure,y=SalePrice))+geom_bar(stat="summary",fun.y=median,fill="red")
+
+
+ggplot(data=train,aes(x=OverallQual,y=SalePrice))+geom_point(color="blue")+
+  facet_wrap(~BsmtExposure)+geom_smooth(method="lm")+
+  stat_summary(fun.y=median,color="red",geom="line",aes(group=1))
+
+#BsmtFinType1
+
+ggplot(data=train,aes(x=BsmtFinType1,y=SalePrice,color=OverallQual))+geom_point()+
+  stat_summary(fun.y=median,color="red",geom="line",aes(group=1))+geom_boxplot(alpha=0.1)
+ggplot(data=train,aes(x=BsmtFinType1,y=SalePrice))+geom_bar(stat="summary",fun.y=median,fill="red")
+
+
+ggplot(data=train,aes(x=OverallQual,y=SalePrice))+geom_point(color="blue")+
+  facet_wrap(~BsmtFinType1)+geom_smooth(method="lm")+
+  stat_summary(fun.y=median,color="red",geom="line",aes(group=1))
+
+#BsmtFinSF1
+
+ggplot(data=train,aes(x=BsmtFinSF1,y=SalePrice,color=OverallQual))+geom_point()
+
+
+ggplot(data=train,aes(x=BsmtFinSF1,y=SalePrice))+geom_point(color="blue")+
+  facet_wrap(~OverallQual)+geom_smooth(method="lm")
+
+
+#TotalBsmtSF
+
+ggplot(data=train,aes(x=TotalBsmtSF,y=SalePrice,color=OverallQual))+geom_point()
+
+
+ggplot(data=train,aes(x=TotalBsmtSF,y=SalePrice))+geom_point(color="blue")+
+  facet_wrap(~OverallQual)+geom_smooth(method="lm")
+
+
+
+#Heating
+
+ggplot(data=train,aes(x=Heating,y=SalePrice,color=OverallQual))+geom_point()+
+  stat_summary(fun.y=median,color="red",geom="line",aes(group=1))+geom_boxplot(alpha=0.1)
+ggplot(data=train,aes(x=Heating,y=SalePrice))+geom_bar(stat="summary",fun.y=median,fill="red")
+
+
+ggplot(data=train,aes(x=OverallQual,y=SalePrice))+geom_point(color="blue")+
+  facet_wrap(~Heating)+geom_smooth(method="lm")+
+  stat_summary(fun.y=median,color="red",geom="line",aes(group=1))
+
+
+#HeatingQC
+ggplot(data=train,aes(x=HeatingQC,y=SalePrice,color=OverallQual))+geom_point()+
+  stat_summary(fun.y=median, color="red",geom="line",aes(group=1))+
+  geom_boxplot(alpha=0.2)
+ggplot(data=train,aes(x=OverallQual,y=SalePrice,fill=HeatingQC))+geom_bar(stat="summary",fun.y=median)
+ggplot(data=train,aes(x=HeatingQC,y=SalePrice,fill=OverallQual))+geom_bar(stat="summary",fun.y=median)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
