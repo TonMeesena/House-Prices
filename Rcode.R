@@ -9,6 +9,8 @@ install.packages("dplyr")
 install.packages("Metrics")
 install.packages("neuralnet")
 install.packages("caret")
+install.packages("tidyverse")
+library(tidyverse)
 library(caret)
 library(neuralnet)
 library(Metrics)
@@ -320,7 +322,420 @@ ggplot(data=train,aes(x=OverallQual,y=SalePrice,color=Utilities))+geom_point()
 #LotConfig
 ggplot(data=train,aes(x=OverallQual,y=SalePrice,color=LotConfig))+geom_point()
 ggplot(data=train,aes(x=OverallQual,y=SalePrice,fill=LotConfig))+geom_bar(stat="summary",fun.y="mean")
+<<<<<<< HEAD
 
+
+=======
+ggplot(data=train,aes(x=OverallQual,y=SalePrice))+geom_bar(stat="summary",fun.y="mean",fill="green")+facet_wrap(~LotConfig)
+ggplot(data=train,aes(x=OverallQual,y=SalePrice))+geom_point(color="orange")+facet_wrap(~LotConfig)
+ggplot(data=train,aes(x=LotConfig,y=SalePrice))+geom_bar(stat="summary",fun.y="mean",fill="red")
+
+#LandSlope
+ggplot(data=train,aes(x=OverallQual,y=SalePrice))+geom_bar(stat="summary",fun.y="mean",fill="green")+facet_wrap(~LandSlope)
+ggplot(data=train,aes(x=LandSlope,y=SalePrice))+geom_bar(stat="summary",fun.y="mean",fill="red")
+ggplot(data=train,aes(x=OverallQual,y=SalePrice,color=LandSlope))+geom_point()
+
+#Neighborhood
+ggplot(data=train,aes(x=OverallQual,y=SalePrice,color=Neighborhood))+geom_point()
+
+ggplot(data=train,aes(x=Neighborhood,y=SalePrice))+geom_bar(stat="summary",fun.y="median",fill="red")
+
+train_by_Neighbor <- train %>% 
+  group_by(Neighborhood) %>% 
+  dplyr::summarise(MeanSales = mean(SalePrice))
+
+a <- train %>% 
+  group_by(Neighborhood) %>% 
+  filter(SalePrice > mean(SalePrice))
+
+ggplot(a,aes(x=Neighborhood,y=SalePrice))+geom_point(fill="blue")
+ggplot(train,aes(x=Neighborhood,y=SalePrice))+geom_point(alpha=0.2,color="blue")+geom_point(color="red",data=a)
+
+
+plot(MeanSales~Neighborhood,data=train_by_Neighbor)
+ggplot(data=train_by_Neighbor,aes(x=Neighborhood, y=MeanSales))+geom_point(fill="blue")
+ggplot(data=train_by_Neighbor,aes(x=Neighborhood, weight=MeanSales))+geom_bar(fill="blue") 
+
+train_by_Neighbor_g <-train_by_Neighbor %>% 
+  filter(MeanSales>median(MeanSales))
+train_by_Neighbor_l <-train_by_Neighbor %>% 
+  filter(MeanSales<median(MeanSales))
+
+ggplot(data=train_by_Neighbor_g,aes(x=Neighborhood, weight=MeanSales))+geom_bar(fill="blue") 
+  
+  
+ggplot(data=train_by_Neighbor,aes(x=Neighborhood, weight=MeanSales))+geom_bar(data=train_by_Neighbor_g,fill="blue") +
+  geom_bar(data=train_by_Neighbor_l,fill="red")
+
+
+
+#Condition1
+ggplot(data=train,aes(x=Condition1, y=SalePrice))+geom_bar(fill="blue",stat="summary",fun.y=mean) 
+ggplot(data=train,aes(x=Condition1, y=SalePrice))+geom_point(color="blue")
+
+#Condition2
+ggplot(data=train,aes(x=Condition2, y=SalePrice))+geom_bar(fill="blue",stat="summary",fun.y=mean) 
+ggplot(data=train,aes(x=Condition2, y=SalePrice))+geom_point(color="blue")
+
+
+#BldgType
+ggplot(data=train,aes(x=BldgType, y=SalePrice))+geom_bar(fill="blue",stat="summary",fun.y=mean) 
+ggplot(data=train,aes(x=BldgType, y=SalePrice))+geom_point(color="blue")
+
+#HouseStyle
+ggplot(data=train,aes(x=HouseStyle, y=SalePrice))+geom_bar(fill="blue",stat="summary",fun.y=mean) 
+ggplot(data=train,aes(x=HouseStyle, y=SalePrice))+geom_point(color="blue")
+
+#OverallQual
+ggplot(data=train,aes(x=OverallQual, y=SalePrice))+geom_bar(fill="blue",stat="summary",fun.y=mean) 
+ggplot(data=train,aes(x=OverallQual, y=SalePrice))+geom_point(color="blue")
+
+#OverallCond
+ggplot(data=train,aes(x=OverallCond, y=SalePrice))+geom_bar(fill="blue",stat="summary",fun.y=mean) 
+ggplot(data=train,aes(x=OverallCond, y=SalePrice))+geom_point(color="blue")
+
+#YearBuilt
+ggplot(data=train,aes(x=YearBuilt, y=SalePrice))+geom_bar(fill="blue",stat="summary",fun.y=mean) 
+ggplot(data=train,aes(x=YearBuilt, y=SalePrice))+geom_point(color="blue")
+
+
+ggplot(train, aes(x = as.factor(YearBuilt), y = SalePrice,color=OverallQual)) + 
+  geom_point(size=2) + 
+  stat_summary(fun.y=median, aes(group=1), geom="line", colour="blue") 
+
+
+#YearRemodAdd
+ggplot(data=train,aes(x=YearRemodAdd, y=SalePrice))+geom_bar(fill="blue",stat="summary",fun.y=mean) 
+
+ggplot(train, aes(x = YearRemodAdd, y = SalePrice,color=OverallQual)) + 
+  geom_point(size=2) + 
+  stat_summary(fun.y=median, aes(group=1), geom="line", colour="blue") 
+
+#RoofStyle
+
+ggplot(data=train,aes(x=RoofStyle,y=SalePrice))+geom_point(color="blue")+
+  stat_summary(fun.y=median,aes(group=1),geom="line",color="red")
+ggplot(data=train,aes(x=RoofStyle,y=SalePrice))+geom_bar(fill="blue",stat="summary",fun.y=mean)
+
+
+#RoofMatl
+
+ggplot(data=train,aes(x=RoofMatl,y=SalePrice))+geom_point(color="blue")+
+  stat_summary(fun.y=median,color="red",geom="line",aes(group=1))
+
+#Exterior1st
+ggplot(data=train,aes(x=Exterior1st,y=SalePrice))+geom_point(color="blue")+
+  stat_summary(fun.y=median,color="red",geom="line",aes(group=1))
+
+ggplot(data=train,aes(x=Exterior1st,y=SalePrice))+
+  geom_bar(fill="blue",stat="summary",fun.y=median)+
+  geom_hline(yintercept=median(train$SalePrice))
+
+
+
+
+#Exterior2nd
+ggplot(data=train,aes(x=Exterior2nd,y=SalePrice))+geom_point(color="blue")+
+  stat_summary(fun.y=median,color="red",geom="line",aes(group=1))
+
+ggplot(data=train,aes(x=Exterior2nd,y=SalePrice))+
+  geom_bar(fill="blue",stat="summary",fun.y=median)+
+  geom_hline(yintercept=median(train$SalePrice))
+
+
+#MasVnrType
+ggplot(data=train,aes(x=MasVnrType,y=SalePrice))+geom_point(color="blue")+
+  stat_summary(fun.y=median,color="red",geom="line",aes(group=1))
+
+ggplot(data=train,aes(x=MasVnrType,y=SalePrice))+
+  geom_bar(fill="blue",stat="summary",fun.y=median)+
+  geom_hline(yintercept=median(train$SalePrice))
+
+
+#MasVnrArea
+ggplot(data=train,aes(x=MasVnrArea,y=SalePrice))+geom_point(alpha=0.3,color="blue")+
+  geom_smooth(method="lm",color="red")+geom_point(color="red",size=4,data=train[which(is.na(train$MasVnrArea)),])
+
+
+
+#ExterQual
+
+ggplot(data=train,aes(x=ExterQual,y=SalePrice,color=OverallQual))+geom_point()+
+  stat_summary(fun.y=median,color="red",geom="line",aes(group=1))
+
+ggplot(data=train,aes(x=ExterQual,y=SalePrice))+geom_bar(stat="summary",fun.y=median,fill="red")
+
+ggplot(data=train,aes(x=OverallQual,y=SalePrice))+geom_point(color="blue")+facet_wrap(~ExterQual)
+  stat_summary(fun.y=median,color="red",geom="line",aes(group=1))
+
+#Foundation
+
+ggplot(data=train,aes(x=Foundation,y=SalePrice,color=OverallQual))+geom_point()+
+    stat_summary(fun.y=median,color="red",geom="line",aes(group=1))+geom_boxplot(alpha=0.1)
+  
+  
+ggplot(data=train,aes(x=Foundation,y=SalePrice))+geom_bar(stat="summary",fun.y=median,fill="red")
+  
+  
+ggplot(data=train,aes(x=OverallQual,y=SalePrice))+geom_point(color="blue")+facet_wrap(~Foundation)
+stat_summary(fun.y=median,color="red",geom="line",aes(group=1))
+  
+  
+  
+#BsmtQual
+
+ggplot(data=train,aes(x=BsmtQual,y=SalePrice,color=OverallQual))+geom_point()+
+  stat_summary(fun.y=median,color="red",geom="line",aes(group=1))+geom_boxplot(alpha=0.1)
+ggplot(data=train,aes(x=BsmtQual,y=SalePrice))+geom_bar(stat="summary",fun.y=median,fill="red")
+  
+  
+ggplot(data=train,aes(x=OverallQual,y=SalePrice))+geom_point(color="blue")+
+  facet_wrap(~BsmtQual)+geom_smooth(method="lm")+
+  stat_summary(fun.y=median,color="red",geom="line",aes(group=1))
+  
+
+#BsmtCond
+
+ggplot(data=train,aes(x=BsmtCond,y=SalePrice,color=OverallQual))+geom_point()+
+  stat_summary(fun.y=median,color="red",geom="line",aes(group=1))+geom_boxplot(alpha=0.1)
+ggplot(data=train,aes(x=BsmtCond,y=SalePrice))+geom_bar(stat="summary",fun.y=median,fill="red")
+
+
+ggplot(data=train,aes(x=OverallQual,y=SalePrice))+geom_point(color="blue")+
+  facet_wrap(~BsmtCond)+geom_smooth(method="lm")+
+  stat_summary(fun.y=median,color="red",geom="line",aes(group=1))
+
+#BsmtExposure
+ggplot(data=train,aes(x=BsmtExposure,y=SalePrice,color=OverallQual))+geom_point()+
+  stat_summary(fun.y=median,color="red",geom="line",aes(group=1))+geom_boxplot(alpha=0.1)
+ggplot(data=train,aes(x=BsmtExposure,y=SalePrice))+geom_bar(stat="summary",fun.y=median,fill="red")
+
+
+ggplot(data=train,aes(x=OverallQual,y=SalePrice))+geom_point(color="blue")+
+  facet_wrap(~BsmtExposure)+geom_smooth(method="lm")+
+  stat_summary(fun.y=median,color="red",geom="line",aes(group=1))
+
+#BsmtFinType1
+
+ggplot(data=train,aes(x=BsmtFinType1,y=SalePrice,color=OverallQual))+geom_point()+
+  stat_summary(fun.y=median,color="red",geom="line",aes(group=1))+geom_boxplot(alpha=0.1)
+ggplot(data=train,aes(x=BsmtFinType1,y=SalePrice))+geom_bar(stat="summary",fun.y=median,fill="red")
+
+
+ggplot(data=train,aes(x=OverallQual,y=SalePrice))+geom_point(color="blue")+
+  facet_wrap(~BsmtFinType1)+geom_smooth(method="lm")+
+  stat_summary(fun.y=median,color="red",geom="line",aes(group=1))
+
+#BsmtFinSF1
+
+ggplot(data=train,aes(x=BsmtFinSF1,y=SalePrice,color=OverallQual))+geom_point()
+
+
+ggplot(data=train,aes(x=BsmtFinSF1,y=SalePrice))+geom_point(color="blue")+
+  facet_wrap(~OverallQual)+geom_smooth(method="lm")
+
+
+#TotalBsmtSF
+
+ggplot(data=train,aes(x=TotalBsmtSF,y=SalePrice,color=OverallQual))+geom_point()
+
+
+ggplot(data=train,aes(x=TotalBsmtSF,y=SalePrice))+geom_point(color="blue")+
+  facet_wrap(~OverallQual)+geom_smooth(method="lm")
+
+
+
+#Heating
+
+ggplot(data=train,aes(x=Heating,y=SalePrice,color=OverallQual))+geom_point()+
+  stat_summary(fun.y=median,color="red",geom="line",aes(group=1))+geom_boxplot(alpha=0.1)
+ggplot(data=train,aes(x=Heating,y=SalePrice))+geom_bar(stat="summary",fun.y=median,fill="red")
+
+
+ggplot(data=train,aes(x=OverallQual,y=SalePrice))+geom_point(color="blue")+
+  facet_wrap(~Heating)+geom_smooth(method="lm")+
+  stat_summary(fun.y=median,color="red",geom="line",aes(group=1))
+
+
+#HeatingQC
+ggplot(data=train,aes(x=HeatingQC,y=SalePrice,color=OverallQual))+geom_point()+
+  stat_summary(fun.y=median, color="red",geom="line",aes(group=1))+
+  geom_boxplot(alpha=0.2)
+ggplot(data=train,aes(x=OverallQual,y=SalePrice,fill=HeatingQC))+geom_bar(stat="summary",fun.y=median)
+
+
+#Add Age Reno01
+train$Age<-train$YrSold-train$YearRemodAdd
+train$Reno01<-ifelse(train$YearRemodAdd==train$YearBuilt,0,1)
+ggplot(train,aes(x=Age,y=SalePrice,color=Reno01))+geom_point()+geom_smooth(method="lm",color="red")
+
+ggplot(train,aes(x=as.factor(Reno01),y=SalePrice))+geom_bar(stat="summary",fun.y="mean",fill="blue")+
+  geom_label(stat = "count", aes(label = ..count.., y = ..count..), size=6)
+
+
+#Add IsNew
+train$IsNew<-ifelse(train$YrSold==train$YearBuilt,1,0)
+ggplot(train,aes(x=as.factor(IsNew),y=SalePrice))+geom_bar(stat="summary",fun.y="mean",fill="blue")+
+  geom_label(stat = "count", aes(label = ..count.., y = ..count..), size=6)+
+  geom_boxplot(alpha=0.1)
+
+ggplot(train,aes(x=OverallQual,y=SalePrice))+geom_point()+
+  geom_smooth(data= train[which(train$IsNew==0),],method="lm",color="red")+
+  geom_smooth(data= train[which(train$IsNew==1),],method="lm",color="gold")+
+  geom_point(data=train[train$IsNew==1,],size=2,color="orange")
+
+
+#Neighborhood
+
+ggplot(data=train,aes(x=reorder(Neighborhood, SalePrice,FUN=median),y=SalePrice))+
+  geom_bar(stat="summary",fun.y =median,fill="blue")+
+  geom_label(stat="count",aes(label=..count..,y=..count..))+
+  geom_hline(yintercept=median(train$SalePrice),color="red",linetype="dashed")+
+theme(axis.text.x = element_text(angle = 45, hjust = 1)) +labs(y="Median SalePrice")
+
+
+ggplot(data=train,aes(x=reorder(Neighborhood, SalePrice,FUN=mean),y=SalePrice))+
+  geom_bar(stat="summary",fun.y =mean,fill="blue")+
+  geom_label(stat="count",aes(label=..count..,y=..count..))+
+  geom_hline(yintercept=mean(train$SalePrice),color="red",linetype="dashed")+
+theme(axis.text.x = element_text(angle = 45, hjust = 1)) +labs(y="Mean SalePrice")
+
+
+
+
+ggplot(data=train,aes(x=reorder(Neighborhood,SalePrice,FUN=mean),y=SalePrice,color=OverallQual))+
+  geom_point(alpha=0.5)+stat_summary(fun.y=mean,geom="line",aes(group=1))+
+  stat_summary(fun.y=min,geom="line",aes(group=1))+
+  stat_summary(fun.y=max,geom="line",aes(group=1))+
+  geom_point(data=train[which(as.numeric(train$OverallQual)>9),],color="red")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+
+
+train$Neighborhood<-as.factor(train$Neighborhood)
+train$NeighRich[train$Neighborhood %in% c("StoneBr","NoRidge","NridgHt")]<-2
+train$NeighRich[train$Neighborhood %in% c("MeadowV","IDOTRR","BrDale")]<-0
+train$NeighRich[is.na(train$NeighRich)]<-1
+
+
+#TotalArea
+
+ggplot(data=train,aes(x=GrLivArea,y=SalePrice))+geom_point(color="blue")+
+  geom_smooth(method="lm",color="red")
+
+ggplot(data=train,aes(x=TotalBsmtSF,y=SalePrice))+geom_point(color="blue")+
+  geom_smooth(method="lm",color="red")
+
+train$TotalArea<-train$GrLivArea+train$TotalBsmtSF
+
+
+ggplot(data=train,aes(x=TotalArea,y=SalePrice))+geom_point(color="blue")+
+  geom_smooth(method="lm",color="red")
+
+
+cor(train$SalePrice,train$TotalArea,use="pairwise.complete.obs")
+cor(train$SalePrice,train$GrLivArea,use="pairwise.complete.obs")
+cor(train$SalePrice,train$TotalBsmtSF,use="pairwise.complete.obs")
+
+
+
+
+#random Forest 2
+set.seed(2)
+num<-sample(nrow(test), 0.7*nrow(test))
+
+train_train2<-train[num,]
+train_valid2<-train[-num,]
+
+tree_train22<-randomForest(SalePrice~OverallQual+TotalArea+NeighRich+IsNew+Age+FullBath
+                           ,train_train2,ntree=1000,mtry=8,importance=TRUE)
+
+plot(tree_train22)
+
+valid_high_pred2<-predict(tree_train22,train_valid2)
+
+hist(valid_high_pred2)
+hist(train_valid2$SalePrice)
+RMSE(valid_high_pred2,train_valid2$SalePrice)
+
+#regression 2
+
+regress_train<-lm(SalePrice~OverallQual+TotalArea+NeighRich+IsNew+Age,train_train2)
+
+train_regress_pred<-predict(regress_train,train_valid2)
+
+RMSE(train_regress_pred,train_valid2$SalePrice)
+
+
+plot(train_valid2$SalePrice)+plot(valid_high_pred2)
+
+
+ggplot()+geom_point(data=train_valid,aes(x=row.names(train_valid),y=valid_high_pred2),color="blue")+
+  geom_point(data=train_valid,aes(x=row.names(train_valid),y=SalePrice),color="red")
+
+# Check error for regression
+ggplot(data=train_valid2)+
+  geom_bar(aes(x=reorder(row.names(train_valid),abs(valid_high_pred2-SalePrice),FUN=identity),weight=abs(valid_high_pred2-SalePrice),color=OverallQual))
+
+ggplot(data=train_valid2[,])+
+  geom_bar(aes(x=reorder(row.names(train_valid),abs(valid_high_pred2-SalePrice)/SalePrice*100,FUN=identity),weight=abs(valid_high_pred2-SalePrice)/SalePrice*100,color=OverallQual))
+
+ggplot(data=train_valid2[,])+
+  geom_bar(aes(x=reorder(row.names(train_valid),OverallQual,FUN=identity),weight=abs(valid_high_pred2-SalePrice)/SalePrice*100,color=OverallQual))
+
+
+#
+ggplot(data=train_valid2[,])+
+  geom_bar(aes(x=reorder(row.names(train_valid),OverallQual,FUN=identity),weight=abs(train_regress_pred-SalePrice)/SalePrice*100,color=OverallQual))
+
+
+#Prepare to submit
+testsub<-test
+
+#Fill
+
+testsub$Age<-testsub$YrSold-testsub$YearRemodAdd
+
+testsub$IsNew<-ifelse(testsub$YrSold==testsub$YearBuilt,1,0)
+
+
+testsub$NeighRich[testsub$Neighborhood %in% c("StoneBr","NoRidge","NridgHt")]<-2
+testsub$NeighRich[testsub$Neighborhood %in% c("MeadowV","IDOTRR","BrDale")]<-0
+testsub$NeighRich[is.na(testsub$NeighRich)]<-1
+
+
+testsub$TotalArea<-testsub$GrLivArea+testsub$TotalBsmtSF
+
+
+
+testsub_fr<-randomForest(SalePrice~OverallQual+TotalArea+NeighRich+IsNew+Age
+                           ,train,ntree=1000,mtry=5)
+
+testsub[661,"TotalArea"]<-testsub[661,"GrLivArea"]
+dd<-predict(testsub_fr,testsub)
+
+testsub_final<-data.frame("Id"=testsub$Id,"SalePrice"=dd)
+
+write_csv(testsub_final,"submission")
+
+train3<-train
+
+
+#Test
+
+NumVar<-which(sapply(train,is.numeric))
+NameNumVar<-names(train[,NumVar])
+
+
+for(i in 1:length(NumVar)){
+  if(abs(skew(train3[,NumVar[i]]))>0.8){
+    
+    train3[,NumVar[i]]<-log(train3[,NumVar[i]]+1)
+    
+  }
+}
+
+
+#Eliminate NA
 
 
 
